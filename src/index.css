@@ -1,11 +1,74 @@
 * { box-sizing: border-box; }
-body {
+html, body {
   margin: 0;
   padding: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif;
   background: #F4F1EA;
   color: #1A1A1A;
+  font-size: 17px;
   -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
 }
 input[type="range"] { -webkit-appearance: auto; }
 button { font-family: inherit; }
+
+/* Layout responsive — desktop par défaut, sidebar empilée sur mobile */
+.layout-grid {
+  display: grid;
+  grid-template-columns: minmax(300px, 360px) 1fr;
+  gap: 40px;
+  max-width: 1240px;
+  margin: 0 auto;
+}
+.sidebar-sticky {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  align-self: start;
+  position: sticky;
+  top: 24px;
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+@media (max-width: 880px) {
+  .layout-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .sidebar-sticky {
+    position: static;
+    max-height: none;
+    overflow: visible;
+  }
+  .app-container {
+    padding: 24px 16px !important;
+  }
+  .hero-answer {
+    padding: 24px 20px !important;
+  }
+  .card {
+    padding: 20px !important;
+  }
+}
+
+/* Infobulle <details> sans triangle */
+details.info > summary {
+  list-style: none;
+  cursor: pointer;
+}
+details.info > summary::-webkit-details-marker { display: none; }
+details.info > summary::marker { content: ''; }
+
+/* Focus visible pour accessibilité clavier */
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+summary:focus-visible {
+  outline: 3px solid #2E5C7E;
+  outline-offset: 2px;
+}
+
+/* Évite que les graphiques Recharts dépassent en mobile */
+.recharts-wrapper { font-size: 12px; }
