@@ -1,0 +1,29 @@
+{
+  "expo": {
+    "name": "Coût voiture",
+    "slug": "cout-voiture",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "scheme": "coutvoiture",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "backgroundColor": "#F4F1EA",
+      "resizeMode": "contain"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.example.coutvoiture"
+    },
+    "android": {
+      "package": "com.example.coutvoiture",
+      "adaptiveIcon": {
+        "backgroundColor": "#1A1A1A"
+      }
+    },
+    "web": {
+      "bundler": "metro"
+    }
+  }
+}
