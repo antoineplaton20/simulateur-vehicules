@@ -4,7 +4,9 @@ Simulateur de coût total de possession (TCO) pour comparer thermique, hybride e
 
 ## 🚀 Démo
 
-Le site est déployé sur Vercel : *(URL à venir)*
+Pour mettre le site en ligne, voir **[DEPLOY.md](./DEPLOY.md)**. Vercel en 3 minutes, gratuit, redéploiement automatique à chaque `git push`.
+
+L'app mobile native (iOS / Android) est dans **[mobile/](./mobile/README.md)** (Expo / React Native).
 
 ## 🛠️ Stack technique
 
