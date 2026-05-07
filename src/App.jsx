@@ -1,6 +1,10 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect, useMemo, lazy, Suspense } from 'react'
 import { fetchVehicules, fetchStats } from './supabase'
-import { PodiumComparison, TcoBreakdown, TcoEvolution } from './charts.jsx'
+import Legal, { LegalFooter, useLegal } from './Legal.jsx'
+
+const PodiumComparison = lazy(() => import('./charts.jsx').then((m) => ({ default: m.PodiumComparison })))
+const TcoBreakdown = lazy(() => import('./charts.jsx').then((m) => ({ default: m.TcoBreakdown })))
+const TcoEvolution = lazy(() => import('./charts.jsx').then((m) => ({ default: m.TcoEvolution })))
 
 // ============================================================
 // CONSTANTES
@@ -115,6 +119,8 @@ export default function App() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [expanded, setExpanded] = useState(() => new Set())
+  const [toast, setToast] = useState('')
+  const legal = useLegal()
 
   const [filtreSegment, setFiltreSegment] = useState(VALEURS_DEFAUT.filtreSegment)
   const [filtreEnergie, setFiltreEnergie] = useState(VALEURS_DEFAUT.filtreEnergie)
@@ -429,6 +435,13 @@ export default function App() {
                     « Tout compris » = achat + essence + entretien + assurance + perte de valeur, sur {dureeGarde} ans.
                     Soit <strong>{fmt(top5[0].tco)} €</strong> au total.
                   </div>
+                  <button
+                    type="button"
+                    onClick={() => partagerResultat(top5[0], dureeGarde, modePaiement, setToast)}
+                    style={S.shareBtn}
+                  >
+                    ↗ Partager mon résultat
+                  </button>
                 </section>
               )}
 
@@ -440,7 +453,9 @@ export default function App() {
                     Coût total estimé sur {dureeGarde} ans, du moins cher au plus cher.
                   </p>
                   <div style={S.podiumChart}>
-                    <PodiumComparison vehicules={top5} dureeGarde={dureeGarde} />
+                    <Suspense fallback={<div style={S.chartLoading}>Chargement du graphique…</div>}>
+                      <PodiumComparison vehicules={top5} dureeGarde={dureeGarde} />
+                    </Suspense>
                   </div>
                   <div style={S.legendRow}>
                     {Object.entries(couleurType).map(([k, c]) => (
@@ -535,23 +550,25 @@ export default function App() {
                   </button>
 
                   {isOpen && (
-                    <div style={S.charts}>
-                      <div style={S.chartBlock}>
-                        <div style={S.chartTitle}>D'où vient le coût ?</div>
-                        <p style={S.chartHelp}>
-                          La barre montre comment se répartissent les {fmt(v.tco)} € sur {dureeGarde} ans.
-                          La valeur de revente est déduite à la fin (en vert).
-                        </p>
-                        <TcoBreakdown v={v} dureeGarde={dureeGarde} />
+                    <Suspense fallback={<div style={S.chartLoading}>Chargement des graphiques…</div>}>
+                      <div style={S.charts}>
+                        <div style={S.chartBlock}>
+                          <div style={S.chartTitle}>D'où vient le coût ?</div>
+                          <p style={S.chartHelp}>
+                            La barre montre comment se répartissent les {fmt(v.tco)} € sur {dureeGarde} ans.
+                            La valeur de revente est déduite à la fin (en vert).
+                          </p>
+                          <TcoBreakdown v={v} dureeGarde={dureeGarde} />
+                        </div>
+                        <div style={S.chartBlock}>
+                          <div style={S.chartTitle}>Si vous revendez avant ?</div>
+                          <p style={S.chartHelp}>
+                            Voici ce que la voiture vous aura vraiment coûté si vous la revendez après 1, 2, 3… ans.
+                          </p>
+                          <TcoEvolution v={v} dureeGarde={dureeGarde} />
+                        </div>
                       </div>
-                      <div style={S.chartBlock}>
-                        <div style={S.chartTitle}>Si vous revendez avant ?</div>
-                        <p style={S.chartHelp}>
-                          Voici ce que la voiture vous aura vraiment coûté si vous la revendez après 1, 2, 3… ans.
-                        </p>
-                        <TcoEvolution v={v} dureeGarde={dureeGarde} />
-                      </div>
-                    </div>
+                    </Suspense>
                   )}
                 </article>
               )})}
@@ -566,11 +583,38 @@ export default function App() {
               L'assurance et l'entretien sont des estimations moyennes. La revente est calculée avec une décote
               de 13 %/an (16 %/an pour l'électrique). <em>Ce simulateur est indicatif et ne remplace pas un devis.</em>
             </p>
+            <LegalFooter open={legal.open} />
           </footer>
         </main>
       </div>
+
+      {legal.page && <Legal page={legal.page} onClose={legal.close} onChange={legal.change} />}
+
+      {toast && (
+        <div role="status" aria-live="polite" style={S.toast}>{toast}</div>
+      )}
     </div>
   )
+}
+
+function partagerResultat(v, dureeGarde, modePaiement, setToast) {
+  const fmt = (n) => Math.round(n).toLocaleString('fr-FR')
+  const url = typeof window !== 'undefined' ? window.location.href : 'https://cout-voiture.fr/'
+  const texte = modePaiement === 'credit' && v.mensualite > 0
+    ? `Le ${v.marque} ${v.modele} me coûterait ${fmt(v.mensualite)} €/mois de crédit + ${fmt(v.coutMensuelMoyen)} €/mois tout compris sur ${dureeGarde} ans.`
+    : `Le ${v.marque} ${v.modele} me coûterait ${fmt(v.coutMensuelMoyen)} €/mois tout compris sur ${dureeGarde} ans.`
+  const data = { title: 'Coût voiture', text: texte, url }
+
+  if (typeof navigator !== 'undefined' && navigator.share) {
+    navigator.share(data).catch(() => {})
+    return
+  }
+  if (typeof navigator !== 'undefined' && navigator.clipboard) {
+    navigator.clipboard.writeText(`${texte} ${url}`).then(() => {
+      setToast('Lien copié dans le presse-papiers ✓')
+      setTimeout(() => setToast(''), 2500)
+    })
+  }
 }
 
 // ============================================================
@@ -705,6 +749,20 @@ const S = {
   },
   heroSep: { color: '#A89F8A', fontSize: 16 },
   heroSub: { fontSize: 14, color: '#A89F8A', marginTop: 14, lineHeight: 1.6 },
+  shareBtn: {
+    marginTop: 18, padding: '12px 18px', background: '#F4F1EA', color: '#1A1A1A',
+    border: '1.5px solid #F4F1EA', cursor: 'pointer',
+    fontSize: 13, letterSpacing: 1.2, fontWeight: 700, textTransform: 'uppercase',
+  },
+  chartLoading: {
+    padding: 24, textAlign: 'center', color: '#888', fontSize: 13, fontStyle: 'italic',
+  },
+  toast: {
+    position: 'fixed', bottom: 24, left: '50%', transform: 'translateX(-50%)',
+    background: '#1A1A1A', color: '#F4F1EA', padding: '12px 20px',
+    fontSize: 14, fontWeight: 600, zIndex: 1100,
+    boxShadow: '0 4px 20px rgba(0,0,0,0.25)',
+  },
   podium: {
     background: '#FFF', border: '1.5px solid #E5E0D5',
     padding: '24px 28px', marginBottom: 8,

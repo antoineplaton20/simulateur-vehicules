@@ -2,19 +2,80 @@
 <html lang="fr">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚗</text></svg>" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+
+    <!-- SEO -->
+    <title>Coût voiture 2026 — Combien va vraiment vous coûter votre voiture ?</title>
+    <meta name="description" content="Simulateur gratuit du coût total d'une voiture en 2026 : achat, essence, entretien, assurance, crédit. Comparez essence, diesel, hybride, électrique. Données ADEME." />
+    <meta name="keywords" content="coût voiture, simulateur tco, comparateur voiture, voiture électrique, voiture hybride, prix voiture 2026, crédit auto, mensualité voiture, ademe, carlabelling" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="author" content="Coût voiture" />
+    <link rel="canonical" href="https://cout-voiture.fr/" />
+
+    <!-- Mobile / PWA -->
     <meta name="theme-color" content="#1A1A1A" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="Coût Voiture" />
+    <meta name="format-detection" content="telephone=no" />
     <link rel="manifest" href="/manifest.webmanifest" />
-    <link rel="apple-touch-icon" href="/icon-192.png" />
-    <title>Combien va vous coûter votre voiture ? — Simulateur 2026</title>
-    <meta name="description" content="Calculez en clair combien va vous coûter votre voiture (achat, essence, entretien, assurance) — comptant ou à crédit. 2026." />
+    <link rel="apple-touch-icon" href="/icon-192.svg" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚗</text></svg>" />
+
+    <!-- Open Graph (Facebook, LinkedIn, WhatsApp, iMessage) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:site_name" content="Coût voiture" />
+    <meta property="og:title" content="Combien va vraiment vous coûter votre voiture ?" />
+    <meta property="og:description" content="Simulateur 2026 du coût total : achat, essence, entretien, assurance, crédit. Comparez essence, diesel, hybride, électrique en 30 secondes." />
+    <meta property="og:image" content="https://cout-voiture.fr/og.svg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:url" content="https://cout-voiture.fr/" />
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Combien va vraiment vous coûter votre voiture ?" />
+    <meta name="twitter:description" content="Simulateur 2026 : achat, essence, entretien, assurance, crédit. Comparez en 30 s." />
+    <meta name="twitter:image" content="https://cout-voiture.fr/og.svg" />
+
+    <!-- Données structurées (Google rich results) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebApplication",
+          "name": "Coût voiture — Simulateur 2026",
+          "url": "https://cout-voiture.fr/",
+          "applicationCategory": "FinanceApplication",
+          "operatingSystem": "Web, iOS, Android",
+          "inLanguage": "fr-FR",
+          "description": "Simulateur gratuit du coût total de possession d'une voiture (achat, énergie, entretien, assurance, crédit) avec comparaison essence, diesel, hybride et électrique.",
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" }
+        },
+        {
+          "@type": "Organization",
+          "name": "Coût voiture",
+          "url": "https://cout-voiture.fr/"
+        }
+      ]
+    }
+    </script>
   </head>
   <body>
     <div id="root"></div>
+
+    <!-- Contenu de secours pour les robots qui n'exécutent pas le JavaScript -->
+    <noscript>
+      <h1>Coût voiture — Simulateur du coût total d'une voiture en 2026</h1>
+      <p>Calculez en clair combien va vous coûter votre voiture sur plusieurs années :
+      prix d'achat, carburant ou électricité, entretien, assurance, intérêts de crédit
+      et perte de valeur à la revente. Comparez essence, diesel, hybride et 100 % électrique.
+      Données techniques issues de l'ADEME (Carlabelling, Licence Ouverte 2.0).</p>
+      <p><strong>Activez le JavaScript pour utiliser le simulateur.</strong></p>
+    </noscript>
+
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <rect width="1200" height="630" fill="#F4F1EA"/>
+  <rect x="0" y="0" width="12" height="630" fill="#1A1A1A"/>
+  <text x="80" y="120" font-size="22" letter-spacing="6" font-family="Helvetica, Arial, sans-serif" font-weight="700" fill="#666">SIMULATEUR · COÛT D'UNE VOITURE · 2026</text>
+  <text x="80" y="270" font-size="80" font-family="Georgia, serif" fill="#1A1A1A">Combien va vous coûter</text>
+  <text x="80" y="370" font-size="80" font-family="Georgia, serif" font-style="italic" fill="#8B6F47">vraiment votre voiture ?</text>
+  <text x="80" y="470" font-size="26" font-family="Helvetica, Arial, sans-serif" fill="#444">Achat · essence · entretien · assurance · crédit</text>
+  <text x="80" y="510" font-size="26" font-family="Helvetica, Arial, sans-serif" fill="#444">Essence, diesel, hybride, 100 % électrique</text>
+  <text x="80" y="585" font-size="18" font-family="Helvetica, Arial, sans-serif" font-weight="700" letter-spacing="3" fill="#1A1A1A">DONNÉES ADEME · GRATUIT · 30 SECONDES</text>
+  <text x="1100" y="410" font-size="240" text-anchor="end">🚗</text>
+</svg>
